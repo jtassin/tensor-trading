@@ -17,6 +17,7 @@ data = pd.read_csv('initialData/ATI.PA.csv')
 
 # Drop date variable
 data = data.drop(['Date'], 1)
+data = data.drop(['Volume'], 1)
 
 print(data)
 
@@ -108,6 +109,7 @@ fig = plt.figure()
 ax1 = fig.add_subplot(111)
 line1, = ax1.plot(y_test)
 line2, = ax1.plot(y_test * 0.5)
+print(plt)
 plt.show()
 
 # Fit neural net
@@ -141,6 +143,7 @@ for e in range(epochs):
             print('MSE Test: ', mse_test[-1])
             # Prediction
             pred = net.run(out, feed_dict={X: X_test})
+            print('pred is', pred)
             line2.set_ydata(pred)
             plt.title('Epoch ' + str(e) + ', Batch ' + str(i))
             plt.pause(0.01)

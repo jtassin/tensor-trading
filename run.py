@@ -17,6 +17,10 @@ data = pd.read_csv('initialData/ATI.PA.csv')
 
 # Drop date variable
 data = data.drop(['Date'], 1)
+# data = data.drop(['Open'], 1)
+# data = data.drop(['High'], 1)
+# data = data.drop(['Low'], 1)
+# data = data.drop(['Close'], 1)
 data = data.drop(['Volume'], 1)
 
 print(data)
@@ -143,7 +147,10 @@ for e in range(epochs):
             print('MSE Test: ', mse_test[-1])
             # Prediction
             pred = net.run(out, feed_dict={X: X_test})
-            print('pred is', pred)
+            # print('pred is', pred)
             line2.set_ydata(pred)
             plt.title('Epoch ' + str(e) + ', Batch ' + str(i))
             plt.pause(0.01)
+print('pred is', pred)
+
+print(data_test)

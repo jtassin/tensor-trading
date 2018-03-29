@@ -1,0 +1,13 @@
+{
+  "name": "tensor-trading",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/jtassin/tensor-trading.git",
+  "author": "Julien <julien@tassin.work>",
+  "license": "MIT",
+  "dependencies": {
+    "csv-parse": "^2.1.0",
+    "protocol-buffers": "^4.0.4",
+    "tensorflow": "^0.7.0"
+  }
+}

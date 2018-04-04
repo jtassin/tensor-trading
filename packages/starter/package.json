@@ -1,0 +1,22 @@
+{
+  "name": "tensor-trading-starter",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "repository": "https://github.com/jtassin/tensor-trading.git",
+  "author": "Julien <julien@tassin.work>",
+  "license": "MIT",
+  "dependencies": {
+    "tensor-trading-data": "^1.0.0",
+    "@tensorflow/tfjs": "^0.7.0",
+    "csv-parse": "^2.1.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "clean": "rimraf lib node_modules",
+    "build": "babel src --out-dir lib"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "rimraf": "^2.6.2"
+  }
+}

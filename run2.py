@@ -14,11 +14,11 @@ import random
 data = pd.read_csv('initialData/ATI.PA.csv')
 
 data = data.drop(['Date'], 1)
-data = data.drop(['Open'], 1)
-data = data.drop(['High'], 1)
-data = data.drop(['Low'], 1)
-data = data.drop(['Close'], 1)
-data = data.drop(['Volume'], 1)
+# data = data.drop(['Open'], 1)
+# data = data.drop(['High'], 1)
+# data = data.drop(['Low'], 1)
+# data = data.drop(['Close'], 1)
+# data = data.drop(['Volume'], 1)
 
 rows_count = data.shape[0]
 cols_count = data.shape[1]
@@ -103,11 +103,13 @@ hidden_4 = tf.nn.relu(tf.add(tf.matmul(hidden_3, W_hidden_4), bias_hidden_4))
 W_out = tf.Variable(weight_initializer([n_neurons_4, 1]))
 bias_out = tf.Variable(bias_initializer([1]))
 
-out = tf.transpose(tf.add(tf.matmul(hidden_4, W_out), bias_out))
+out = tf.slice(tf.add(tf.matmul(hidden_4, W_out), bias_out), 1, train_end)
 
 mean_square_error = tf.reduce_mean(tf.squared_difference(out, Y))
 
 def compute_difference(out, y):
+  # print(out)
+  # print(y)
   return tf.reduce_mean(tf.squared_difference(out, y))
 
 optimizer = tf.train.AdamOptimizer().minimize(mean_square_error)
@@ -141,8 +143,8 @@ for epoch in range(num_epochs):
     session.run(optimizer, feed_dict={X: batch_x, Y: batch_y})
     # epoch_accuracy(tf.argmax(model(x), axis=1, output_type=tf.int32), y)
   if epoch % 5 == 0:
-    tf.summary.scalar('max', tf.reduce_max(tf.squared_difference(out, Y)))
-    tf.summary.scalar('min', tf.reduce_min(tf.squared_difference(out, Y)))
+    # tf.summary.scalar('max', tf.reduce_max(compute_difference(out, y_test)))
+    # tf.summary.scalar('min', tf.reduce_min(compute_difference(out, y_test)))
     # print("Epoch {:03d}: Diff: {:.3f}".format(epoch, epoch_diff_avg.result()))
     mse_train.append(session.run(compute_difference(out, y_train), feed_dict={X: X_train, Y: y_train}))
     mse_test.append(session.run(compute_difference(out, y_test), feed_dict={X: X_test, Y: y_test}))

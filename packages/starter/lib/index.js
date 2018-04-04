@@ -15,7 +15,7 @@ var fetch = require('tensor-trading-data').fetch;
 
 var runner = function () {
   var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-    var model, data, X, Y, xs, ys, toPredict, output, history;
+    var model, data, X, Y, xs, ys, toPredict, h;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -30,7 +30,9 @@ var runner = function () {
             model.add(tf.layers.dense({ units: 1, inputShape: [data[0].length - 1] }));
 
             // Specify the loss type and optimizer for training.
-            model.compile({ loss: 'meanSquaredError', optimizer: 'sgd', metrics: ['accuracy']
+            // optimizer was sgd
+            // seemed less stupid
+            model.compile({ loss: 'meanSquaredError', optimizer: 'adam', metrics: ['accuracy']
             });
 
             // Generate some synthetic data for training.
@@ -50,57 +52,72 @@ var runner = function () {
             // Day of 2018/3/6 ATI.PA
 
             toPredict = [7.36, 7.36, 7.12, 7.20, 7.20];
-            // Expecting 7.68
+            // Expecting 7.61
 
-            output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
+            i = 1;
 
-            console.log('before training');
-            output.print();
+          case 10:
+            if (!(i < 500)) {
+              _context.next = 19;
+              break;
+            }
 
-            console.log('small training ...');
-            // Train the model.
-            history = void 0;
-            _context.next = 16;
-            return model.fit(xs, ys, { epochs: 1 });
+            _context.next = 13;
+            return model.fit(xs, ys, {
+              // batchSize: 4,
+              epochs: 3
+            });
+
+          case 13:
+            h = _context.sent;
+
+            console.log("Loss after Epoch " + i + " : " + h.history.loss[0]);
+            console.log("Accuracy after Epoch " + i + " : " + h.history.acc[0]);
 
           case 16:
-            history = _context.sent;
+            ++i;
+            _context.next = 10;
+            break;
 
+          case 19:
+
+            // let output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
+
+
+            // console.log('before training');
+            // output.print();
+
+
+            // console.log('1 training ...');
+            // // Train the model.
+            // let history;
+
+            // history = await model.fit(xs, ys, { epochs: 1 });
+
+            // // After the training, perform inference.
+            // output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
+            // console.log('after 1 training accuracy is ', history.history.acc[0], 'loss is ', history.history.loss[0]);
+            // output.print();
+
+            // console.log('20 training ...');
+            // // Train the model.
+            // history = await model.fit(xs, ys, { epochs: 20 });
+
+            // // After the training, perform inference.
+            // output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
+            // console.log('after 20 training accuracy is ', history.history.acc[0], 'loss is ', history.history.loss[0]);
+            // output.print();
+
+            // console.log('100 training ...');
+            // // Train the model.
+            // history = await model.fit(xs, ys, { epochs: 100 });
 
             // After the training, perform inference.
             output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
-            console.log('after small training accuracy is ', history.history.acc[0], 'loss is ', history.history.loss[0]);
+            // console.log('after 100 training accuracy is ', history.history.acc[0], 'loss is ', history.history.loss[0]);
             output.print();
 
-            console.log('massive training ...');
-            // Train the model.
-            _context.next = 23;
-            return model.fit(xs, ys, { epochs: 20 });
-
-          case 23:
-            history = _context.sent;
-
-
-            // After the training, perform inference.
-            output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
-            console.log('after massive training accuracy is ', history.history.acc[0], 'loss is ', history.history.loss[0]);
-            output.print();
-
-            console.log('huge training ...');
-            // Train the model.
-            _context.next = 30;
-            return model.fit(xs, ys, { epochs: 500 });
-
-          case 30:
-            history = _context.sent;
-
-
-            // After the training, perform inference.
-            output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
-            console.log('after huge training accuracy is ', history.history.acc[0], 'loss is ', history.history.loss[0]);
-            output.print();
-
-          case 34:
+          case 21:
           case 'end':
             return _context.stop();
         }

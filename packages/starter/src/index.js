@@ -12,7 +12,9 @@ const runner = async () => {
   model.add(tf.layers.dense({ units: 1, inputShape: [data[0].length - 1] }));
 
   // Specify the loss type and optimizer for training.
-  model.compile({ loss: 'meanSquaredError', optimizer: 'sgd', metrics: ['accuracy'],
+  // optimizer was sgd
+  // seemed less stupid
+  model.compile({ loss: 'meanSquaredError', optimizer: 'adam', metrics: ['accuracy'],
 });
 
   // Generate some synthetic data for training.
@@ -27,40 +29,53 @@ const runner = async () => {
 
   // Day of 2018/3/6 ATI.PA
   const toPredict = [7.36, 7.36, 7.12, 7.20, 7.20];
-  // Expecting 7.68
+  // Expecting 7.61
 
-  let output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
-  console.log('before training');
-  output.print();
+  for (i = 1; i < 500 ; ++i) {
+    const h = await model.fit(xs, ys, {
+        // batchSize: 4,
+        epochs: 3
+    });
+    console.log("Loss after Epoch " + i + " : " + h.history.loss[0]);
+    console.log("Accuracy after Epoch " + i + " : " + h.history.acc[0]);
+ }
+
+  // let output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
 
 
-  console.log('small training ...');
-  // Train the model.
-  let history;
+
+
+  // console.log('before training');
+  // output.print();
+
+
+  // console.log('1 training ...');
+  // // Train the model.
+  // let history;
   
-  history = await model.fit(xs, ys, { epochs: 1 });
+  // history = await model.fit(xs, ys, { epochs: 1 });
+
+  // // After the training, perform inference.
+  // output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
+  // console.log('after 1 training accuracy is ', history.history.acc[0], 'loss is ', history.history.loss[0]);
+  // output.print();
+
+  // console.log('20 training ...');
+  // // Train the model.
+  // history = await model.fit(xs, ys, { epochs: 20 });
+
+  // // After the training, perform inference.
+  // output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
+  // console.log('after 20 training accuracy is ', history.history.acc[0], 'loss is ', history.history.loss[0]);
+  // output.print();
+
+  // console.log('100 training ...');
+  // // Train the model.
+  // history = await model.fit(xs, ys, { epochs: 100 });
 
   // After the training, perform inference.
   output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
-  console.log('after small training accuracy is ', history.history.acc[0], 'loss is ', history.history.loss[0]);
-  output.print();
-
-  console.log('massive training ...');
-  // Train the model.
-  history = await model.fit(xs, ys, { epochs: 20 });
-
-  // After the training, perform inference.
-  output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
-  console.log('after massive training accuracy is ', history.history.acc[0], 'loss is ', history.history.loss[0]);
-  output.print();
-
-  console.log('huge training ...');
-  // Train the model.
-  history = await model.fit(xs, ys, { epochs: 500 });
-
-  // After the training, perform inference.
-  output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
-  console.log('after huge training accuracy is ', history.history.acc[0], 'loss is ', history.history.loss[0]);
+  // console.log('after 100 training accuracy is ', history.history.acc[0], 'loss is ', history.history.loss[0]);
   output.print();
 
 }

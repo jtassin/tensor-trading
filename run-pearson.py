@@ -22,18 +22,16 @@ print("Working on ", closes_count, "closes. With", criterias_count, "criterias")
 days_shift = 20
 
 # shifted_data = np.full((data.shape[0] + days_shift, data.shape[1]), 0)
-arr = closes.values.copy()
-print((closes.shape[0] + days_shift, closes.shape[1]))
-arr.resize((closes.shape[0] + days_shift, closes.shape[1]))
-
 arr = data.values.copy()
 arr.resize((data.shape[0] + days_shift, data.shape[1]))
 shifted_data = pd.DataFrame(arr)
+shifted_data = shifted_data.shift(days_shift)
 arr = closes.values.copy()
 closes = closes.reindex(pd.RangeIndex(start=0, stop=closes_count + days_shift, step=1))
-closes = closes.shift(days_shift)
+# closes = closes.shift(days_shift)
 for i in range(days_shift):
-  closes[i] = 0
+  closes[i + closes_count] = 0
 # shifted_data = shifted_data.add(closes, axis='columns')
 shifted_data.insert(0, column="20_close", value=closes)
+shifted_data = shifted_data.fillna(0)
 print(shifted_data)

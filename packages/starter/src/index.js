@@ -28,16 +28,20 @@ const runner = async () => {
   const ys = tf.tensor2d(Y, [Y.length, 1]);
 
   // Day of 2018/3/6 ATI.PA
-  const toPredict = [7.36, 7.36, 7.12, 7.20, 7.20];
+  const toPredict = [7.36, 7.36, 7.12, 7.20, 7.20, 15764];
   // Expecting 7.61
 
   for (i = 1; i < 500 ; ++i) {
     const h = await model.fit(xs, ys, {
         // batchSize: 4,
-        epochs: 3
+        epochs: 50
     });
-    console.log("Loss after Epoch " + i + " : " + h.history.loss[0]);
-    console.log("Accuracy after Epoch " + i + " : " + h.history.acc[0]);
+    // if(h.history.loss[0] < 1) {
+      console.log("Loss after Epoch " + i + " : " + h.history.loss[0], '...', h.history.loss[h.history.loss.length - 1]);
+      console.log("Accuracy after Epoch " + i + " : " + h.history.acc[0], '...', h.history.acc[h.history.acc.length - 1]);
+      output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
+      output.print();
+    // }
  }
 
   // let output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
@@ -74,9 +78,9 @@ const runner = async () => {
   // history = await model.fit(xs, ys, { epochs: 100 });
 
   // After the training, perform inference.
-  output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
-  // console.log('after 100 training accuracy is ', history.history.acc[0], 'loss is ', history.history.loss[0]);
-  output.print();
+  // output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
+  // // console.log('after 100 training accuracy is ', history.history.acc[0], 'loss is ', history.history.loss[0]);
+  // output.print();
 
 }
 

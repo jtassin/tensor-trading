@@ -7,15 +7,14 @@
   "license": "MIT",
   "dependencies": {
     "@tensorflow/tfjs": "^0.7.0",
-    "csv-parse": "^2.1.0",
-    "protocol-buffers": "^4.0.4",
-    "tensorflow": "^0.7.0"
+    "csv-parse": "^2.1.0"
   },
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
     "build:watch": "lerna run build --parallel -- -- -w",
     "build": "lerna run build --parallel",
+    "clean": "lerna run clean --parallel",
     "postinstall": "lerna bootstrap"
   },
   "devDependencies": {

@@ -14,9 +14,6 @@ closes = data['Close']
 # Date is bullshit in our case
 data = data.drop(['Date'], 1)
 
-criterias_count = data.shape[1]
-
-print("Working on ", closes_count, "closes. With", criterias_count, "criterias")
 
 # We will shift the matrix to detect the coorelation with x days of difference
 days_shift = 20
@@ -35,3 +32,35 @@ for i in range(days_shift):
 shifted_data.insert(0, column="20_close", value=closes)
 shifted_data = shifted_data.fillna(0)
 print(shifted_data)
+
+n_neurons_1 = 1024
+n_neurons_2 = 512
+n_neurons_3 = 256
+n_neurons_4 = 128
+
+criterias_count = shifted_data.shape[1]
+
+print("Working on ", closes_count, "closes. With", criterias_count, "criterias")
+
+sigma = 1
+weight_initializer = tf.variance_scaling_initializer(mode="fan_avg", distribution="uniform", scale=sigma)
+bias_initializer = tf.zeros_initializer()
+
+X = tf.placeholder(dtype=tf.float32, shape=[None, criterias_count])
+Y = tf.placeholder(dtype=tf.float32, shape=[None])
+
+W_hidden_1 = tf.Variable(weight_initializer([criterias_count, n_neurons_1]))
+bias_hidden_1 = tf.Variable(bias_initializer([n_neurons_1]))
+W_hidden_2 = tf.Variable(weight_initializer([n_neurons_1, n_neurons_2]))
+bias_hidden_2 = tf.Variable(bias_initializer([n_neurons_2]))
+W_hidden_3 = tf.Variable(weight_initializer([n_neurons_2, n_neurons_3]))
+bias_hidden_3 = tf.Variable(bias_initializer([n_neurons_3]))
+W_hidden_4 = tf.Variable(weight_initializer([n_neurons_3, n_neurons_4]))
+bias_hidden_4 = tf.Variable(bias_initializer([n_neurons_4]))
+
+# Hidden layer
+hidden_1 = tf.nn.relu(tf.add(tf.matmul(X, W_hidden_1), bias_hidden_1))
+hidden_2 = tf.nn.relu(tf.add(tf.matmul(hidden_1, W_hidden_2), bias_hidden_2))
+hidden_3 = tf.nn.relu(tf.add(tf.matmul(hidden_2, W_hidden_3), bias_hidden_3))
+hidden_4 = tf.nn.relu(tf.add(tf.matmul(hidden_3, W_hidden_4), bias_hidden_4))
+

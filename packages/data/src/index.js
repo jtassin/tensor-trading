@@ -25,7 +25,7 @@ const matrice = math.zeros(rowsCount - maxdayShift,  DAYS_SHIFT.length + colsCou
 
 parsed.forEach((row, index) => {
   // We do not use values older than 20 days ago
-  if (index > rowsCount - maxdayShift) {
+  if (index > rowsCount - 5) {
     return
   }
   row.forEach((value, rowIndex) => {

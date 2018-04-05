@@ -45,6 +45,7 @@ const EPOCHS = 10;
       // batchSize: 4,
       epochs: EPOCHS
     });
+    console.log(toPredict);
     // if(h.history.loss[0] < 1) {
     console.log("Loss after Epoch " + i + " : " + h.history.loss[0], '...', h.history.loss[h.history.loss.length - 1]);
     console.log("Accuracy after Epoch " + i + " : " + h.history.acc[0], '...', h.history.acc[h.history.acc.length - 1]);
@@ -52,7 +53,11 @@ const EPOCHS = 10;
     const prediction = output.dataSync();
     // output.print();
     // console.log(prediction);
-    console.log(predictionResults.map((item, i) => ([dataForpredicting[i][4], [prediction[i*3], prediction[i*3 + 1], prediction[i*3 + 2]],item])));
+    const allPreditions = [];
+    for (let preIndex = 0; preIndex < DAYS_SHIFT.length; ++preIndex) {
+      allPreditions.push(prediction[i*DAYS_SHIFT.length + preIndex]);
+    }
+    console.log(predictionResults.map((item, i) => ([dataForpredicting[i][DAYS_SHIFT.length + 3], allPreditions,item])));
     // }
   }
 

@@ -10,7 +10,7 @@ const runner = async () => {
   let data = fetch();
 
   // Lets use last 20 lines for visual check
-  const dataForpredicting = data.slice(data.length - 21, data.length -1);
+  const dataForpredicting = data.slice(data.length - 21, data.length - 1);
   data = data.slice(0, data.length - 21);
 
   // Add a dense layer with 1 output unit.
@@ -38,14 +38,13 @@ const runner = async () => {
   const toPredict = dataForpredicting.map((row) => row.slice(DAYS_SHIFT.length, row.length));
   // Expecting 7.61
 
-const EPOCHS = 10;
+  const EPOCHS = 10;
 
   for (i = 1; i < 500; ++i) {
     const h = await model.fit(xs, ys, {
       // batchSize: 4,
       epochs: EPOCHS
     });
-    console.log(toPredict);
     // if(h.history.loss[0] < 1) {
     console.log("Loss after Epoch " + i + " : " + h.history.loss[0], '...', h.history.loss[h.history.loss.length - 1]);
     console.log("Accuracy after Epoch " + i + " : " + h.history.acc[0], '...', h.history.acc[h.history.acc.length - 1]);
@@ -53,13 +52,15 @@ const EPOCHS = 10;
     const prediction = output.dataSync();
     // output.print();
     // console.log(prediction);
-    const allPreditions = [];
-    for (let preIndex = 0; preIndex < DAYS_SHIFT.length; ++preIndex) {
-      allPreditions.push(prediction[i*DAYS_SHIFT.length + preIndex]);
-    }
-    console.log(predictionResults.map((item, i) => ([dataForpredicting[i][DAYS_SHIFT.length + 3], allPreditions,item])));
-    // }
-  }
+    console.log(predictionResults.map((item, i) => {
+      const allPreditions = [];
+      for (let preIndex = 0; preIndex < DAYS_SHIFT.length; ++preIndex) {
+        allPreditions.push(prediction[i * DAYS_SHIFT.length + preIndex]);
+      }
+      return ([dataForpredicting[i][DAYS_SHIFT.length + 3], allPreditions, item]);
+  }));
+  // }
+}
 
   // let output = model.predict(tf.tensor2d([toPredict], [1, data[0].length - 1]));
 

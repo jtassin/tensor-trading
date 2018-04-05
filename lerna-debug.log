@@ -1,0 +1,42 @@
+0 silly input [ 'start' ]
+1 silly flags { _: [ 'run' ],
+1 silly flags   'reject-cycles': false,
+1 silly flags   rejectCycles: false,
+1 silly flags   parallel: true,
+1 silly flags   script: 'start',
+1 silly flags   args: [] }
+2 verbose rootPath /mnt/d/Mobaxterm/home/tensor-trading
+3 info version 2.9.1
+4 silly existsSync /mnt/d/Mobaxterm/home/tensor-trading/VERSION
+5 silly initialize attempt
+6 silly initialize success
+7 silly execute attempt
+8 info run in 1 package(s): npm run start
+9 silly runScriptInPackageStreaming [ 'start', [], 'tensor-trading-starter' ]
+10 silly getExecOpts { cwd: '/mnt/d/Mobaxterm/home/tensor-trading/packages/starter' }
+11 error execute callback with error
+12 error Error: Command failed: yarn run start
+12 error /mnt/d/Mobaxterm/home/tensor-trading/packages/data/node_modules/mathjs/lib/function/matrix/zeros.js:125
+12 error         throw new Error('Parameters in function zeros must be positive integers');
+12 error         ^
+12 error
+12 error Error: Parameters in function zeros must be positive integers
+12 error     at /mnt/d/Mobaxterm/home/tensor-trading/packages/data/node_modules/mathjs/lib/function/matrix/zeros.js:125:15
+12 error     at Array.forEach (<anonymous>)
+12 error     at _validate (/mnt/d/Mobaxterm/home/tensor-trading/packages/data/node_modules/mathjs/lib/function/matrix/zeros.js:123:10)
+12 error     at _zeros (/mnt/d/Mobaxterm/home/tensor-trading/packages/data/node_modules/mathjs/lib/function/matrix/zeros.js:89:5)
+12 error     at ...number | BigNumber | string (/mnt/d/Mobaxterm/home/tensor-trading/packages/data/node_modules/mathjs/lib/function/matrix/zeros.js:59:16)
+12 error     at preprocessRestParams (/mnt/d/Mobaxterm/home/tensor-trading/packages/data/node_modules/typed-function/typed-function.js:781:28)
+12 error     at generic (/mnt/d/Mobaxterm/home/tensor-trading/packages/data/node_modules/typed-function/typed-function.js:1073:27)
+12 error     at Object.zeros (/mnt/d/Mobaxterm/home/tensor-trading/packages/data/node_modules/typed-function/typed-function.js:1092:24)
+12 error     at Object.<anonymous> (/mnt/d/Mobaxterm/home/tensor-trading/packages/data/lib/index.js:38:20)
+12 error     at Module._compile (module.js:652:30)
+12 error error Command failed with exit code 1.
+12 error
+12 error yarn run v0.24.6
+12 error $ node src/index.js
+12 error matrice will be  NaN x 13
+12 error info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+12 error
+12 error     at Promise.all.then.arr (/mnt/d/Mobaxterm/home/tensor-trading/node_modules/execa/index.js:236:11)
+12 error     at <anonymous>

@@ -15,6 +15,7 @@
     "build:watch": "lerna run build --parallel -- -- -w",
     "build": "lerna run build --parallel",
     "clean": "lerna run clean --parallel",
+    "start": "lerna run start --parallel",
     "postinstall": "lerna bootstrap"
   },
   "devDependencies": {

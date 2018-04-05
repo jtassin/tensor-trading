@@ -11,6 +11,7 @@
     "csv-parse": "^2.1.0"
   },
   "scripts": {
+    "start": "node src/index.js",
     "test": "jest",
     "clean": "rimraf lib node_modules",
     "build": "babel src --out-dir lib --ignore '**/*.test.js'"

@@ -1,9 +1,10 @@
 const math = require('mathjs');
+const fs = require('fs');
 const data = require('../resources/ATI.PA.csv.js').default;
 
-export const DAYS_SHIFT = [20];
+export const DAYS_SHIFT = [20, 10, 5];
 
-const maxdayShift = Math.max(DAYS_SHIFT);
+const maxdayShift = 20; //Math.max(DAYS_SHIFT);
 
 const parsed = data.split('\n').map((row) => {
   const result = row.split(',');
@@ -19,38 +20,55 @@ const rowsCount = parsed.length;
 
 const colsCount = parsed[0].length;
 
-const matrice = math.zeros(rowsCount - maxdayShift, 1 + colsCount);
+console.log('matrice will be ', rowsCount - maxdayShift, 'x', 1 + DAYS_SHIFT.length + colsCount);
+const matrice = math.zeros(rowsCount - maxdayShift,  DAYS_SHIFT.length + colsCount);
 
-DAYS_SHIFT.forEach((daysShift) => {
-
-
-  console.log('matrice will be ', rowsCount, 'x', colsCount);
-
-  parsed.forEach((row, index) => {
-    // We do not use values older than 20 days ago
-    if (index > rowsCount - daysShift) {
-      return
-    }
-    row.forEach((value, rowIndex) => {
-      matrice.subset(math.index(index, rowIndex + 1), value);
-    });
+parsed.forEach((row, index) => {
+  // We do not use values older than 20 days ago
+  if (index > rowsCount - maxdayShift) {
+    return
+  }
+  row.forEach((value, rowIndex) => {
+    matrice.subset(math.index(index, rowIndex + DAYS_SHIFT.length), value);
   });
+});
+
+DAYS_SHIFT.forEach((daysShift, daysShiftIndex) => {
+
+  // parsed.forEach((row, index) => {
+  //   // We do not use values older than 20 days ago
+  //   if (index > rowsCount - maxdayShift) {
+  //     return
+  //   }
+  //   row.forEach((value, rowIndex) => {
+  //     matrice.subset(math.index(index, daysShiftIndex * colsCount + rowIndex + 1), value);
+  //   });
+  // });
 
   parsed.forEach((row, index) => {
-    if (index < daysShift) {
+    if (index < maxdayShift) {
       return
     }
-    if (index === 20) {
-    }
-    matrice.subset(math.index(index - daysShift, 0), row[4]);
+    matrice.subset(math.index(index - daysShift, daysShiftIndex), row[4]);
   });
 
 });
 const result = JSON.parse(JSON.stringify(matrice)).data;
 
+console.log(result[3409 ]);
+
 
 // matrice.subset(math.index(DAYS_SHIFT - 1, [1, colsCount]), [2, 3]);  
 
 // matrice.subset([math.index(0, 0), math.index(rowsCount -1, colsCount)],parsed);
+
+fs.writeFile("../resources/ATI.PA.transformed", JSON.stringify(result), function(err) {
+    if(err) {
+        return console.log(err);
+    }
+
+    console.log("The file was saved!");
+}); 
+
 
 export const fetch = () => result;

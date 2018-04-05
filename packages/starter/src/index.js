@@ -14,7 +14,7 @@ const runner = async () => {
   data = data.slice(0, data.length - 21);
 
   // Add a dense layer with 1 output unit.
-  model.add(tf.layers.dense({ units: 1, inputShape: [data[0].length - 1] }));
+  model.add(tf.layers.dense({ units: 3, inputShape: [data[0].length - DAYS_SHIFT.length] }));
 
   // Specify the loss type and optimizer for training.
   // optimizer was sgd
@@ -30,12 +30,12 @@ const runner = async () => {
   // const train = data.slice(0, trainEnd);
   const X = data.map((row) => row.slice(DAYS_SHIFT.length, row.length));
   const Y = data.map((row) => row.slice(0, DAYS_SHIFT.length));
-  const xs = tf.tensor2d(X, [X.length, data[0].length - 1]);
-  const ys = tf.tensor2d(Y, [Y.length, 1]);
+  const xs = tf.tensor2d(X, [X.length, data[0].length - DAYS_SHIFT.length]);
+  const ys = tf.tensor2d(Y, [Y.length, DAYS_SHIFT.length]);
 
   // Day of 2018/3/6 ATI.PA
-  const predictionResults = dataForpredicting.map((row) => row[0]);
-  const toPredict = dataForpredicting.map((row) => row.slice(1, row.length));
+  const predictionResults = dataForpredicting.map((row) => row.slice(0, DAYS_SHIFT.length));
+  const toPredict = dataForpredicting.map((row) => row.slice(DAYS_SHIFT.length, row.length));
   // Expecting 7.61
 
 const EPOCHS = 10;
@@ -48,9 +48,11 @@ const EPOCHS = 10;
     // if(h.history.loss[0] < 1) {
     console.log("Loss after Epoch " + i + " : " + h.history.loss[0], '...', h.history.loss[h.history.loss.length - 1]);
     console.log("Accuracy after Epoch " + i + " : " + h.history.acc[0], '...', h.history.acc[h.history.acc.length - 1]);
-    output = model.predict(tf.tensor2d(toPredict, [toPredict.length, data[0].length - 1]));
+    output = model.predict(tf.tensor2d(toPredict, [toPredict.length, data[0].length - DAYS_SHIFT.length]));
     const prediction = output.dataSync();
-    console.log(predictionResults.map((item, i) => ([dataForpredicting[i][4], prediction[i],item])));
+    // output.print();
+    // console.log(prediction);
+    console.log(predictionResults.map((item, i) => ([dataForpredicting[i][4], [prediction[i*3], prediction[i*3 + 1], prediction[i*3 + 2]],item])));
     // }
   }
 

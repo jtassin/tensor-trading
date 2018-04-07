@@ -45,6 +45,7 @@ const runner = async () => {
       // batchSize: 4,
       epochs: EPOCHS
     });
+
     // if(h.history.loss[0] < 1) {
     console.log("Loss after Epoch " + i + " : " + h.history.loss[0], '...', h.history.loss[h.history.loss.length - 1]);
     console.log("Accuracy after Epoch " + i + " : " + h.history.acc[0], '...', h.history.acc[h.history.acc.length - 1]);

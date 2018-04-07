@@ -8,7 +8,8 @@
   "dependencies": {
     "csv-parse": "^2.1.0",
     "mathjs": "^4.0.1",
-    "papaparse": "^4.3.7"
+    "papaparse": "^4.3.7",
+    "technicalindicators": "^1.1.8"
   },
   "scripts": {
     "test": "jest src",

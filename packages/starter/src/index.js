@@ -14,7 +14,7 @@ const runner = async () => {
   data = data.slice(0, data.length - 21);
 
   // Add a dense layer with 1 output unit.
-  model.add(tf.layers.dense({ units: 3, inputShape: [data[0].length - DAYS_SHIFT.length] }));
+  model.add(tf.layers.dense({ units: DAYS_SHIFT.length, inputShape: [data[0].length - DAYS_SHIFT.length] }));
 
   // Specify the loss type and optimizer for training.
   // optimizer was sgd

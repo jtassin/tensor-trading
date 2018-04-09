@@ -5,7 +5,9 @@ const DAYS_SHIFT = require('tensor-trading-data').DAYS_SHIFT;
 const runner = async () => {
 
   // A sequential model is a container which you can add layers to.
-  const model = tf.sequential();
+  const model1 = tf.sequential();
+
+  const model2 = tf.sequential();
 
   let data = fetch();
 
@@ -49,7 +51,7 @@ const runner = async () => {
     // if(h.history.loss[0] < 1) {
     console.log("Loss after Epoch " + i + " : " + h.history.loss[0], '...', h.history.loss[h.history.loss.length - 1]);
     console.log("Accuracy after Epoch " + i + " : " + h.history.acc[0], '...', h.history.acc[h.history.acc.length - 1]);
-    output = model.predict(tf.tensor2d(toPredict, [toPredict.length, data[0].length - DAYS_SHIFT.length]));
+    output = model1.predict(tf.tensor2d(toPredict, [toPredict.length, data[0].length - DAYS_SHIFT.length]));
     const prediction = output.dataSync();
     // output.print();
     // console.log(prediction);

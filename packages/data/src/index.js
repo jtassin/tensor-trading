@@ -21,9 +21,9 @@ export const ADJ_CLOSE_INDEX = 4;
 export const VOLUME_INDEX = 5;
 
 /**
- * Compute and add the mobil mean
+ * Compute and add the standard moving average
  * 
- * @param {Array<Array<number>>} data 
+ * @param {number[][]} data 
  * @param {Number} value 
  */
 export function addSMA(data, value) {

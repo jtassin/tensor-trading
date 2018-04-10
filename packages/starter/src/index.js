@@ -16,11 +16,16 @@ const runner = async () => {
   // Add a dense layer with 1 output unit.
   model.add(tf.layers.dense({ units: 3, inputShape: [data[0].length - DAYS_SHIFT.length] }));
 
+  const learningRate = undefined;
+  const optimizer= tf.train.adam(learningRate);
+
+  const loss = 'meanSquaredError';
+
   // Specify the loss type and optimizer for training.
   // optimizer was sgd
   // seemed less stupid
   model.compile({
-    loss: 'meanSquaredError', optimizer: 'adam', metrics: ['accuracy'],
+    loss, optimizer, metrics: ['accuracy'],
   });
 
   // Generate some synthetic data for training.
@@ -31,6 +36,20 @@ const runner = async () => {
   const X = data.map((row) => row.slice(DAYS_SHIFT.length, row.length));
   const Y = data.map((row) => row.slice(0, DAYS_SHIFT.length));
   const xs = tf.tensor2d(X, [X.length, data[0].length - DAYS_SHIFT.length]);
+  const toConcat = [];
+  let index = 0;
+  DAYS_SHIFT.forEach((daysShift) => {
+    console.log(index);
+    const column = xs.slice([0, index], [data.length, 1]);
+    console.log(column.print());
+    const paddded = column.pad([[daysShift - 5, 0], [0, 0]]);
+    console.log(paddded.print());
+    toConcat.push(paddded.slice([0, 0], [data.length, 1]));
+    ++index;
+  });
+  const axis = 1;
+  const xs2 = tf.concat(toConcat, axis);
+  console.log(xs2.print());
   const ys = tf.tensor2d(Y, [Y.length, DAYS_SHIFT.length]);
 
   // Day of 2018/3/6 ATI.PA
@@ -40,7 +59,7 @@ const runner = async () => {
 
   const EPOCHS = 10;
 
-  for (i = 1; i < 500; ++i) {
+  for (i = 1; i < 5000; ++i) {
     const h = await model.fit(xs, ys, {
       // batchSize: 4,
       epochs: EPOCHS

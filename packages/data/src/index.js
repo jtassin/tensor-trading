@@ -1,5 +1,6 @@
 const math = require('mathjs');
 const fs = require('fs');
+const path = require('path');
 const data = require('../resources/ATI.PA.csv.js').default;
 const RSI = require('technicalindicators').RSI;
 const ADL = require('technicalindicators').ADL;
@@ -185,7 +186,7 @@ console.log(result[3409]);
 
 // matrice.subset([math.index(0, 0), math.index(rowsCount -1, colsCount)],parsed);
 
-fs.writeFile("../resources/ATI.PA.transformed", JSON.stringify(result), function (err) {
+fs.writeFile(path.join(__dirname, "../resources/ATI.PA.transformed"), JSON.stringify(result), function (err) {
   if (err) {
     return console.log(err);
   }

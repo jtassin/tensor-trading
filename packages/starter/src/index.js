@@ -16,12 +16,12 @@ const runner = async () => {
   data = data.slice(0, data.length - 21);
 
   // Add a dense layer with 1 output unit.
-  model.add(tf.layers.dense({ units: DAYS_SHIFT.length, inputShape: [data[0].length - DAYS_SHIFT.length] }));
+  model1.add(tf.layers.dense({ units: DAYS_SHIFT.length, inputShape: [data[0].length - DAYS_SHIFT.length] }));
 
   // Specify the loss type and optimizer for training.
   // optimizer was sgd
   // seemed less stupid
-  model.compile({
+  model1.compile({
     loss: 'meanSquaredError', optimizer: 'adam', metrics: ['accuracy'],
   });
 
@@ -43,7 +43,7 @@ const runner = async () => {
   const EPOCHS = 10;
 
   for (i = 1; i < 500; ++i) {
-    const h = await model.fit(xs, ys, {
+    const h = await model1.fit(xs, ys, {
       // batchSize: 4,
       epochs: EPOCHS
     });
